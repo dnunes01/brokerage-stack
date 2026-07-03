@@ -1,5 +1,7 @@
 # brokerage-stack
 
+[![Build](https://github.com/dnunes01/brokerage-stack/actions/workflows/build.yml/badge.svg)](https://github.com/dnunes01/brokerage-stack/actions/workflows/build.yml)
+
 A Spring Boot REST API for tracking brokerage account holdings — built as a hands-on
 portfolio project while I prep for backend/full-stack SWE roles.
 
