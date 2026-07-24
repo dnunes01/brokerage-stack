@@ -3,6 +3,8 @@ package com.danprep.brokerage;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class Holding {
 
     private long id;
@@ -28,6 +30,7 @@ public class Holding {
         this.quantity = quantity;
     }
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     public BigDecimal getCostBasis() {
         return costBasis.setScale(2, RoundingMode.HALF_UP);
     }

@@ -10,5 +10,4 @@ public class BrokerageHoldingsApiController {
     public String alive() {
         return "I am alive!";
     }
-
 }
