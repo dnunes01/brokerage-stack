@@ -12,7 +12,7 @@ public class Holding {
     private BigDecimal quantity, costBasis;
 
     Holding(long id, String symbol, BigDecimal quantity, BigDecimal costBasis) {
-        this.id = id; // TODO get this assigned automatically
+        this.id = id;
         this.symbol = symbol;
         this.quantity = quantity;
         this.costBasis = costBasis;
@@ -22,6 +22,7 @@ public class Holding {
         return id;
     }
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     public BigDecimal getQuantity() {
         return quantity;
     }

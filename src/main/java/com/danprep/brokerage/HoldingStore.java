@@ -14,7 +14,7 @@ import jakarta.annotation.PostConstruct;
 @Repository
 public class HoldingStore {
     private final Map<Long, Holding> myHolding = new ConcurrentHashMap<>();
-    private AtomicLong id;
+    private final AtomicLong idCounter = new AtomicLong();
 
     public List<Holding> findAll() {
         return new ArrayList<>(myHolding.values());
@@ -22,8 +22,8 @@ public class HoldingStore {
 
     @PostConstruct
     public void seedData() {
-        Holding apple = new Holding(1L, "AAPL", new BigDecimal("10"), new BigDecimal("150.00"));
-        Holding msft = new Holding(2L, "MSFT", new BigDecimal("5"), new BigDecimal("320.50"));
+        Holding apple = new Holding(idCounter.incrementAndGet(), "AAPL", new BigDecimal("10"), new BigDecimal("150.00"));
+        Holding msft = new Holding(idCounter.incrementAndGet(), "MSFT", new BigDecimal("5"), new BigDecimal("320.50"));
         myHolding.put(apple.getId(), apple);
         myHolding.put(msft.getId(), msft);
     }
