@@ -20,6 +20,12 @@ public class HoldingStore {
         return new ArrayList<>(myHolding.values());
     }
 
+    public Holding save(Holding holding) {
+        Holding newHolding = new Holding(idCounter.incrementAndGet(), holding.getSymbol(), holding.getQuantity(), holding.getCostBasis());
+        myHolding.put(newHolding.getId(), newHolding);
+        return newHolding;
+    }
+
     @PostConstruct
     public void seedData() {
         Holding apple = new Holding(idCounter.incrementAndGet(), "AAPL", new BigDecimal("10"), new BigDecimal("150.00"));
