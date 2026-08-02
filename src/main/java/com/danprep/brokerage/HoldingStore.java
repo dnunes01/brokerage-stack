@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -21,14 +22,20 @@ public class HoldingStore {
     }
 
     public Holding save(Holding holding) {
-        Holding newHolding = new Holding(idCounter.incrementAndGet(), holding.getSymbol(), holding.getQuantity(), holding.getCostBasis());
+        Holding newHolding = new Holding(idCounter.incrementAndGet(), holding.getSymbol(), holding.getQuantity(),
+                holding.getCostBasis());
         myHolding.put(newHolding.getId(), newHolding);
         return newHolding;
     }
 
+    public Optional<Holding> findById(Long id) {
+        return Optional.ofNullable(myHolding.get(id));
+    }
+
     @PostConstruct
     public void seedData() {
-        Holding apple = new Holding(idCounter.incrementAndGet(), "AAPL", new BigDecimal("10"), new BigDecimal("150.00"));
+        Holding apple = new Holding(idCounter.incrementAndGet(), "AAPL", new BigDecimal("10"),
+                new BigDecimal("150.00"));
         Holding msft = new Holding(idCounter.incrementAndGet(), "MSFT", new BigDecimal("5"), new BigDecimal("320.50"));
         myHolding.put(apple.getId(), apple);
         myHolding.put(msft.getId(), msft);
