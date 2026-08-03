@@ -22,8 +22,8 @@ public class HoldingStore {
     }
 
     public Holding save(Holding holding) {
-        Holding newHolding = new Holding(idCounter.incrementAndGet(), holding.getSymbol(), holding.getQuantity(),
-                holding.getCostBasis());
+        Holding newHolding = new Holding(
+                idCounter.incrementAndGet(), holding.getSymbol(), holding.getQuantity(), holding.getCostBasis());
         myHolding.put(newHolding.getId(), newHolding);
         return newHolding;
     }
