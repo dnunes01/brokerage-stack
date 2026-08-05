@@ -5,29 +5,23 @@ import java.math.RoundingMode;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Null;
-import jakarta.validation.constraints.Positive;
-
 public class Holding {
 
-    @Null(message = "ID must be null for new records")
     private Long id;
-    @NotBlank(message = "Symbol is required")
     private String symbol;
-    @NotNull(message = "Quantity must not be null for new records")
-    @Positive(message = "Quantity must be positive")
     private BigDecimal quantity;
-    @NotNull(message = "Cost Basis must not be null for new records")
-    @Positive(message = "Cost Basis must be positive")
     private BigDecimal costBasis;
 
-    Holding(Long id, String symbol, BigDecimal quantity, BigDecimal costBasis) {
-        this.id = id;
+    Holding(String symbol, BigDecimal quantity, BigDecimal costBasis) {
         this.symbol = symbol;
         this.quantity = quantity;
         this.costBasis = costBasis;
+
+    }
+
+    Holding(Long id, String symbol, BigDecimal quantity, BigDecimal costBasis) {
+        this(symbol, quantity, costBasis);
+        this.id = id;
     }
 
     public Long getId() {

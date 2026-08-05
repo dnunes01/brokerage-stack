@@ -37,8 +37,10 @@ public class HoldingsController {
     }
 
     @PostMapping // → POST /api/v1/holdings
-    public ResponseEntity<Holding> createHolding(@Valid @RequestBody Holding holding) {
-        Holding saved = store.save(holding);
+    public ResponseEntity<Holding> createHolding(@Valid @RequestBody HoldingRequest request) {
+        Holding saved = store.save(
+                new Holding(
+                        request.symbol(), request.quantity(), request.costBasis()));
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
