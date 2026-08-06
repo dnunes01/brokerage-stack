@@ -15,4 +15,8 @@ public record HoldingResponse(
         costBasis = costBasis.setScale(2, RoundingMode.HALF_UP);
     }
 
+    public static HoldingResponse from(Holding holding) {
+        return new HoldingResponse(holding.getId(), holding.getSymbol(), holding.getQuantity(), holding.getCostBasis());
+    }
+
 }

@@ -25,19 +25,23 @@ public class HoldingsController {
     }
 
     @GetMapping // → GET /api/v1/holdings
-    public List<Holding> listHoldings() {
-        return store.findAll();
+    public List<HoldingResponse> listHoldings() {
+        return store.findAll()
+                .stream()
+                .map(HoldingResponse::from)
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Holding> getHolding(@PathVariable Long id) {
+    public ResponseEntity<HoldingResponse> getHolding(@PathVariable Long id) {
         return store.findById(id)
+                .map(HoldingResponse::from)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping // → POST /api/v1/holdings
-    public ResponseEntity<Holding> createHolding(@Valid @RequestBody HoldingRequest request) {
+    public ResponseEntity<HoldingResponse> createHolding(@Valid @RequestBody HoldingRequest request) {
         Holding saved = store.save(
                 new Holding(
                         request.symbol(), request.quantity(), request.costBasis()));
@@ -46,7 +50,7 @@ public class HoldingsController {
                 .path("/{id}")
                 .buildAndExpand(saved.getId())
                 .toUri();
-        return ResponseEntity.created(location).body(saved);
+        return ResponseEntity.created(location).body(HoldingResponse.from(saved));
     }
 
 }
