@@ -8,11 +8,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public record HoldingResponse(
         Long id,
         String symbol,
-        @JsonFormat(shape = JsonFormat.Shape.STRING) BigDecimal quantity)
-        // @JsonFormat(shape = JsonFormat.Shape.STRING) BigDecimal costBasis) {
-        {
-    HoldingResponse {
-         @JsonFormat(shape = JsonFormat.Shape.STRING) BigDecimal costBasis().setScale(2, RoundingMode.HALF_UP);
+        @JsonFormat(shape = JsonFormat.Shape.STRING) BigDecimal quantity,
+        @JsonFormat(shape = JsonFormat.Shape.STRING) BigDecimal costBasis) {
+
+    public HoldingResponse {
+        costBasis = costBasis.setScale(2, RoundingMode.HALF_UP);
     }
 
 }
