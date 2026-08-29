@@ -43,6 +43,7 @@ curl http://localhost:8080/alive
 | ------ | ------------------- | ---------------------------------- | ------- |
 | `GET`  | `/alive`            | Health check, returns `I am alive!` | `200`   |
 | `GET`  | `/api/v1/holdings`  | List all holdings                  | `200`   |
+| `GET`  | `/api/v1/holdings/{id}` | Fetch a single holding by id   | `200` / `404` |
 | `POST` | `/api/v1/holdings`  | Create a holding                   | `201`   |
 
 The store seeds two holdings on startup, so a fresh `GET` returns:
