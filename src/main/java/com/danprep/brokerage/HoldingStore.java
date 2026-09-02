@@ -14,22 +14,32 @@ import jakarta.annotation.PostConstruct;
 
 @Repository
 public class HoldingStore {
-    private final Map<Long, Holding> myHolding = new ConcurrentHashMap<>();
+    private final Map<Long, Holding> myHoldings = new ConcurrentHashMap<>();
     private final AtomicLong idCounter = new AtomicLong();
 
     public List<Holding> findAll() {
-        return new ArrayList<>(myHolding.values());
+        return new ArrayList<>(myHoldings.values());
     }
 
     public Holding save(Holding holding) {
         Holding newHolding = new Holding(
                 idCounter.incrementAndGet(), holding.getSymbol(), holding.getQuantity(), holding.getCostBasis());
-        myHolding.put(newHolding.getId(), newHolding);
+        myHoldings.put(newHolding.getId(), newHolding);
         return newHolding;
     }
 
     public Optional<Holding> findById(Long id) {
-        return Optional.ofNullable(myHolding.get(id));
+        return Optional.ofNullable(myHoldings.get(id));
+    }
+
+    public Optional<Holding> update(Long id, Holding holding) {
+
+        Holding replacement = myHoldings.computeIfPresent(id,
+                (key, existing) -> new Holding(id, holding.getSymbol(),
+                        holding.getQuantity(),
+                        holding.getCostBasis()));
+
+        return Optional.ofNullable(replacement);
     }
 
     @PostConstruct
@@ -37,7 +47,8 @@ public class HoldingStore {
         Holding apple = new Holding(idCounter.incrementAndGet(), "AAPL", new BigDecimal("10"),
                 new BigDecimal("150.00"));
         Holding msft = new Holding(idCounter.incrementAndGet(), "MSFT", new BigDecimal("5"), new BigDecimal("320.50"));
-        myHolding.put(apple.getId(), apple);
-        myHolding.put(msft.getId(), msft);
+        myHoldings.put(apple.getId(), apple);
+        myHoldings.put(msft.getId(), msft);
     }
+
 }
