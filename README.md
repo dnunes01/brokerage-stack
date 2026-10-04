@@ -89,3 +89,11 @@ parse numbers as doubles. `costBasis` is returned scaled to 2 decimal places.
       `contextLoads` smoke test
 - [ ] Dockerize
 - [ ] Deploy (AWS, stretch goal)
+
+## How I use AI on this project
+
+I'm building this with Claude Code, Anthropic's AI coding assistant, as a tutor and pair
+programmer: it helps me plan each step, explains the Java and Spring concepts behind it, and
+reviews what I write. I type all of the code myself and run every test and request locally,
+so each commit reflects what I understood well enough to write. I'm noting it openly because
+using these tools well is part of how I work, and because I want the learning to stay mine.
