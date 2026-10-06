@@ -13,20 +13,7 @@
 	<artifactId>brokerage-holdings-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>brokerage-holdings-api</name>
-	<description />
-	<url />
-	<licenses>
-		<license />
-	</licenses>
-	<developers>
-		<developer />
-	</developers>
-	<scm>
-		<connection />
-		<developerConnection />
-		<tag />
-		<url />
-	</scm>
+	<description>Spring Boot REST API for tracking brokerage account holdings</description>
 	<properties>
 		<java.version>21</java.version>
 	</properties>
