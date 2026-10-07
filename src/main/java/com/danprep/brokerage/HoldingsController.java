@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +33,7 @@ public class HoldingsController {
                 .toList();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}") // → GET /api/v1/holdings/{id}
     public ResponseEntity<HoldingResponse> getHolding(@PathVariable Long id) {
         return store.findById(id)
                 .map(HoldingResponse::from)
@@ -51,6 +52,14 @@ public class HoldingsController {
                 .buildAndExpand(saved.getId())
                 .toUri();
         return ResponseEntity.created(location).body(HoldingResponse.from(saved));
+    }
+
+    @PutMapping("/{id}") // → PUT /api/v1/holdings/{id}
+    public ResponseEntity<HoldingResponse> update(@PathVariable Long id, @Valid @RequestBody HoldingRequest request) {
+        return store.update(id, new Holding(request.symbol(), request.quantity(), request.costBasis()))
+                .map(HoldingResponse::from)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 }
