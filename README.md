@@ -11,11 +11,10 @@ A from-scratch REST service modeling brokerage holdings (symbol, quantity, cost 
 built incrementally to demonstrate applied Java/Spring skills beyond algorithm practice,
 starting with API design.
 
-**Status: working read/create/update API over an in-memory store.** `GET`, `POST`, and
-`PUT` on `/api/v1/holdings` are live, with bean validation on incoming payloads and
-MockMvc tests covering `PUT`. Data lives in a `ConcurrentHashMap` and is seeded at
-startup, so it resets on every restart — `DELETE`, broader test coverage, and real
-persistence are next.
+**Status: full CRUD API over an in-memory store.** `GET`, `POST`, `PUT`, and `DELETE`
+on `/api/v1/holdings` are live, with bean validation on incoming payloads and MockMvc
+tests covering `PUT`. Data lives in a `ConcurrentHashMap` and is seeded at startup, so it
+resets on every restart — broader test coverage and real persistence are next.
 
 ## Stack
 
@@ -48,6 +47,7 @@ curl http://localhost:8080/alive
 | `GET`  | `/api/v1/holdings/{id}` | Fetch a single holding by id   | `200` / `404` |
 | `POST` | `/api/v1/holdings`  | Create a holding; `Location` header points to the new resource | `201` / `400` |
 | `PUT`  | `/api/v1/holdings/{id}` | Replace an existing holding    | `200` / `404` / `400` |
+| `DELETE` | `/api/v1/holdings/{id}` | Delete a holding (no response body) | `204` / `404` |
 
 The store seeds two holdings on startup, so a fresh `GET` returns:
 
@@ -87,11 +87,11 @@ parse numbers as doubles. `costBasis` is returned scaled to 2 decimal places.
 - [x] `GET`/`POST` endpoints for holdings
 - [x] Bean validation on request payloads
 - [x] `PUT` endpoint for holdings
-- [ ] `DELETE` endpoint for holdings
+- [x] `DELETE` endpoint for holdings
 - [ ] Persistence via Spring Data JPA (replacing the in-memory store)
 - [ ] Swagger/OpenAPI documentation
 - [ ] Unit + integration tests (JUnit 5, Mockito, Spring Test) — MockMvc tests cover
-      `PUT` (200 / 404 / 400); `GET`, `POST`, and `HoldingStore` tests are next
+      `PUT` (200 / 404 / 400); `GET`, `POST`, `DELETE`, and `HoldingStore` tests are next
 - [ ] Dockerize
 - [ ] Deploy (AWS, stretch goal)
 
