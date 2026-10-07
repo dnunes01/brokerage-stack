@@ -11,19 +11,21 @@ A from-scratch REST service modeling brokerage holdings (symbol, quantity, cost 
 built incrementally to demonstrate applied Java/Spring skills beyond algorithm practice,
 starting with API design.
 
-**Status: working read/create API over an in-memory store.** `GET` and `POST` on
-`/api/v1/holdings` are live, with bean validation on incoming payloads. Data lives in a
-`ConcurrentHashMap` and is seeded at startup, so it resets on every restart — real
-persistence, `PUT`/`DELETE`, and meaningful tests are next.
+**Status: working read/create/update API over an in-memory store.** `GET`, `POST`, and
+`PUT` on `/api/v1/holdings` are live, with bean validation on incoming payloads and
+MockMvc tests covering `PUT`. Data lives in a `ConcurrentHashMap` and is seeded at
+startup, so it resets on every restart — `DELETE`, broader test coverage, and real
+persistence are next.
 
 ## Stack
 
 - Java 21
 - Spring Boot 3.5.16 (Spring Web, Bean Validation)
 - Maven
+- JUnit 5, Mockito, Spring Test (MockMvc)
 
-Planned as the project grows: Swagger/OpenAPI docs, JUnit 5 + Mockito + Spring Test,
-JPA persistence (H2/PostgreSQL), Docker, and a light AWS deployment.
+Planned as the project grows: Swagger/OpenAPI docs, JPA persistence (H2/PostgreSQL),
+Docker, and a light AWS deployment.
 
 ## Running it
 
@@ -44,7 +46,8 @@ curl http://localhost:8080/alive
 | `GET`  | `/alive`            | Health check, returns `I am alive!` | `200`   |
 | `GET`  | `/api/v1/holdings`  | List all holdings                  | `200`   |
 | `GET`  | `/api/v1/holdings/{id}` | Fetch a single holding by id   | `200` / `404` |
-| `POST` | `/api/v1/holdings`  | Create a holding                   | `201`   |
+| `POST` | `/api/v1/holdings`  | Create a holding; `Location` header points to the new resource | `201` / `400` |
+| `PUT`  | `/api/v1/holdings/{id}` | Replace an existing holding    | `200` / `404` / `400` |
 
 The store seeds two holdings on startup, so a fresh `GET` returns:
 
@@ -71,22 +74,24 @@ parse numbers as doubles. `costBasis` is returned scaled to 2 decimal places.
 
 ### Validation
 
-`POST` payloads are validated with `@Valid`:
+`POST` and `PUT` payloads are validated with `@Valid`; an invalid body returns `400`:
 
 - `symbol` — required, non-blank
 - `quantity` — required, must be positive
 - `costBasis` — required, must be positive
-- `id` — must be omitted; the server assigns it
+- `id` — not part of the request body; the server assigns it (POST) or takes it from
+  the path (PUT). An `id` sent in the body is ignored.
 
 ## Roadmap
 
 - [x] `GET`/`POST` endpoints for holdings
 - [x] Bean validation on request payloads
-- [ ] `PUT`/`DELETE` endpoints for holdings
+- [x] `PUT` endpoint for holdings
+- [ ] `DELETE` endpoint for holdings
 - [ ] Persistence via Spring Data JPA (replacing the in-memory store)
 - [ ] Swagger/OpenAPI documentation
-- [ ] Unit + integration tests (JUnit 5, Mockito, Spring Test) — currently only a
-      `contextLoads` smoke test
+- [ ] Unit + integration tests (JUnit 5, Mockito, Spring Test) — MockMvc tests cover
+      `PUT` (200 / 404 / 400); `GET`, `POST`, and `HoldingStore` tests are next
 - [ ] Dockerize
 - [ ] Deploy (AWS, stretch goal)
 
