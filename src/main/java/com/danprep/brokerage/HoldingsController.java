@@ -17,7 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/v1/holdings")
+@RequestMapping(path = {"/api/v1/holdings","/api/v1/holdings/"} )
 public class HoldingsController {
 
     private final HoldingStore store;
