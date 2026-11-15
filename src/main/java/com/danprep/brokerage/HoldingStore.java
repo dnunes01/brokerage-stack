@@ -42,6 +42,10 @@ public class HoldingStore {
         return Optional.ofNullable(replacement);
     }
 
+    public Optional<Holding> delete(Long id) {
+        return Optional.ofNullable(myHoldings.remove(id));
+    }
+
     @PostConstruct
     public void seedData() {
         Holding apple = new Holding(idCounter.incrementAndGet(), "AAPL", new BigDecimal("10"),
